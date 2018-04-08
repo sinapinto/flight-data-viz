@@ -7,6 +7,10 @@ html, body {
   color: rgba(0,0,0,.8);
 }
 
+body {
+  text-align: center;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -14,15 +18,8 @@ html, body {
   padding: 20px;
 }
 
-h1 {
-}
-
-input {
-}
-
 .results {
   width: 100%;
-  text-align: center;
   font-size: 16px;
 }
 
@@ -31,5 +28,7 @@ input {
   margin-right: 8px;
 }
 
-#airline {
+#graph {
+  font-size: 13px;
+  border: 1px dashed rgba(0,0,0,.6);
 }

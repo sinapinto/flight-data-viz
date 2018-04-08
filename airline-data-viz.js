@@ -3,6 +3,7 @@ const airlineNameMap = Object.keys(airlines).reduce((acc, cur) => ({ ...acc, [ai
 const counterEl = document.getElementById('counter');
 const airlineEl = document.getElementById('airline');
 const searchEl = document.getElementById('search');
+const lineEl = document.getElementById('line');
 
 searchEl.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -37,8 +38,16 @@ const isValidFlight = (flight) => {
         && typeof flight.time === 'string';
 };
 
+const buildPointsString = (data) => {
+    let str = '';
+    for (let i = 0; i < data.length; i++) {
+        str += `${i*10},${data[i]} `;
+    }
+    return str;
+};
+
 const updateGraph = (airlineCode) => {
-    const results = flights_jan_01_2008.filter(flight => {
+    const flights = flights_jan_01_2008.filter(flight => {
         if (!isValidFlight(flight)) {
             return false;
         }
@@ -47,9 +56,24 @@ const updateGraph = (airlineCode) => {
         }
         return flight.airline === airlineCode;
     });
-    const numResults = results.length;
+
+    // build an array containing the number of flights, where the index represents the hour
+    const numFlightsByHour = Array.from({ length: 24 }, () => 0);
+    flights.forEach(flight => {
+        const hour = Number(flight.time.slice(0, 2));
+        if (!isNaN(hour) && hour >= 0 && hour < 24) {
+            numFlightsByHour[hour]++;
+        }
+    });
+
+    const maxValue = numFlightsByHour.reduce((max, cur) => Math.max(max, cur), Number.MIN_VALUE);
+    const scale = 100; // this should match the viewBox height
+    const yAxisValues = numFlightsByHour.map(num => scale - ((num / maxValue) * scale));
+    lineEl.setAttribute('points', buildPointsString(yAxisValues));
+
+    const numResults = flights.length;
     counterEl.innerHTML = `${numResults} Flight${numResults === 1 ? '' : 's'}`;
     airlineEl.innerHTML = airlineCode ? airlines[airlineCode] : 'All Airlines';
 };
 
-updateGraph(null);
+doSearch(searchEl.value);
