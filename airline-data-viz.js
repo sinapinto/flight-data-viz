@@ -41,7 +41,7 @@ const isValidFlight = (flight) => {
 const valuesToPoints = (values) => {
     let str = '';
     for (let i = 0; i < values.length; i++) {
-        str += `${i*10},${values[i]} `;
+        str += `${i*10 + 5},${values[i]} `;
     }
     return str.trim();
 };
@@ -70,7 +70,7 @@ const updateGraph = (airlineCode) => {
 
     const maxValue = numFlightsByHour.reduce((max, cur) => Math.max(max, cur), Number.MIN_VALUE);
     const scale = 100; // this should match the viewBox height
-    const toValues = numFlightsByHour.map(num => +(scale - (num / maxValue) * scale).toFixed(2));
+    const toValues = numFlightsByHour.map(num => scale - (num / maxValue) * scale);
     const values = `${valuesToPoints(fromValues)}; ${valuesToPoints(toValues)}`;
     animateEl.setAttribute('values', values);
     animateEl.beginElement();
