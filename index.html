@@ -17,7 +17,9 @@
       <span id="airline"></span>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" id="graph" width="80%" height="80%" viewBox="0 0 230 100" preserveAspectRatio="none">
-      <polyline id="line" fill="none" stroke="skyblue" stroke-width="1" />
+      <polyline fill="none" stroke="skyblue" stroke-width="1">
+        <animate id="animate" attributeName="points" fill="freeze" dur="1s" calcMode="spline" keySplines=".42 0 .58 1" />
+      </polyline>
     </svg>
   </body>
 </html>
